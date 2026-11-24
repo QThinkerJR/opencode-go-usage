@@ -1,0 +1,11 @@
+.slim/
+.codegraph/
+node_modules/
+coverage/
+.env
+.env.*
+dist/
+artifacts/
+*.tgz
+*.log
+.DS_Store

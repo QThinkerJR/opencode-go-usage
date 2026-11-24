@@ -1,0 +1,398 @@
+/*
+ * OpenCode Go usage panel — Desktop side region.
+ * Every selector is scoped under .ogu-root and every class/keyframe uses the
+ * ogu- prefix, so the injected stylesheet cannot leak into the host window.
+ * Colors are host semantic tokens (with dark-theme fallbacks) and therefore
+ * follow the user's light/dark theme.
+ */
+
+.ogu-root {
+  --ogu-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  padding: 14px 14px 16px;
+  color: var(--color-text-base, #e6e6e6);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.4;
+  font-variant-numeric: tabular-nums;
+  text-align: left;
+  -webkit-font-smoothing: antialiased;
+}
+
+.ogu-root *,
+.ogu-root *::before,
+.ogu-root *::after {
+  box-sizing: border-box;
+}
+
+/* Header ------------------------------------------------------------------ */
+
+.ogu-header {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--color-v2-border-border-base, rgba(127, 127, 127, 0.25));
+}
+
+.ogu-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+}
+
+.ogu-heading {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.ogu-title {
+  margin: 0;
+  padding: 0;
+  color: var(--color-text-strong, var(--color-text-base, #e6e6e6));
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.ogu-refresh {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--color-v2-border-border-base, rgba(127, 127, 127, 0.25));
+  border-radius: var(--radius-sm, 6px);
+  background: transparent;
+  color: var(--color-v2-text-text-muted, #9a9a9a);
+  cursor: pointer;
+  transition:
+    color 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease,
+    transform 120ms ease,
+    opacity 160ms ease;
+}
+
+.ogu-refresh svg {
+  display: block;
+  flex: none;
+}
+
+.ogu-refresh:hover:not(:disabled) {
+  background: var(--color-v2-background-bg-layer-02, rgba(127, 127, 127, 0.14));
+  color: var(--color-text-base, #e6e6e6);
+}
+
+.ogu-refresh:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.ogu-refresh:focus-visible {
+  outline: 2px solid var(--color-text-strong, var(--color-text-base, #e6e6e6));
+  outline-offset: 2px;
+}
+
+.ogu-refresh:disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+
+.ogu-refresh--busy svg {
+  animation: ogu-spin 900ms linear infinite;
+}
+
+/* Badges ------------------------------------------------------------------ */
+
+.ogu-badge {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  line-height: 1;
+}
+
+.ogu-badge--stale {
+  padding: 3px 6px;
+  border: 1px solid var(--color-v2-border-border-base, rgba(127, 127, 127, 0.25));
+  border-radius: 999px;
+  color: var(--color-v2-text-text-muted, #9a9a9a);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.ogu-badge--limited {
+  padding: 3px 5px;
+  border-radius: 4px;
+  background: var(--color-v2-background-bg-layer-02, rgba(127, 127, 127, 0.14));
+  background: color-mix(in srgb, var(--color-v2-state-fg-danger, #ef4444) 15%, transparent);
+  color: var(--color-v2-state-fg-danger, #ef4444);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+/* Body -------------------------------------------------------------------- */
+
+.ogu-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+  padding-top: 14px;
+}
+
+.ogu-meters,
+.ogu-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.ogu-meter {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.ogu-meter-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  min-height: 17px;
+}
+
+.ogu-label {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--color-v2-text-text-muted, #9a9a9a);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.35;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.ogu-label--loading {
+  opacity: 0.6;
+}
+
+.ogu-percent {
+  flex: none;
+  min-width: 4ch;
+  margin-left: auto;
+  color: var(--color-text-base, #e6e6e6);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.35;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.ogu-percent--limited {
+  color: var(--color-v2-state-fg-danger, #ef4444);
+}
+
+.ogu-track {
+  position: relative;
+  height: 8px;
+  margin-top: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--color-v2-background-bg-layer-02, rgba(127, 127, 127, 0.14));
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.ogu-fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0) 65%);
+  transition:
+    width 420ms var(--ogu-ease),
+    background-color 220ms ease;
+}
+
+.ogu-fill--success {
+  background-color: var(--color-v2-state-fg-success, #22c55e);
+}
+
+.ogu-fill--warning {
+  background-color: var(--color-v2-state-fg-warning, #f59e0b);
+}
+
+.ogu-fill--error {
+  background-color: var(--color-v2-state-fg-danger, #ef4444);
+}
+
+.ogu-meter-foot {
+  display: flex;
+  align-items: center;
+  min-height: 15px;
+  margin-top: 5px;
+}
+
+.ogu-reset {
+  overflow: hidden;
+  color: var(--color-v2-text-text-muted, #9a9a9a);
+  font-size: 11px;
+  line-height: 1.35;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Notices ----------------------------------------------------------------- */
+
+.ogu-notice {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  padding: 10px 11px;
+  border-radius: var(--radius-md, 8px);
+  background: var(--color-v2-background-bg-layer-01, rgba(127, 127, 127, 0.08));
+}
+
+.ogu-notice--error {
+  box-shadow: inset 2px 0 0 var(--color-v2-state-fg-danger, #ef4444);
+}
+
+.ogu-notice-title {
+  color: var(--color-text-base, #e6e6e6);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.ogu-notice--error .ogu-notice-title {
+  color: var(--color-v2-state-fg-danger, #ef4444);
+}
+
+.ogu-notice-detail {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--color-v2-text-text-muted, #9a9a9a);
+  font-size: 11px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+/* Loading skeleton -------------------------------------------------------- */
+
+.ogu-skel {
+  display: block;
+  border-radius: 3px;
+  background: var(--color-v2-background-bg-layer-02, rgba(127, 127, 127, 0.14));
+  animation: ogu-pulse 1500ms ease-in-out infinite;
+}
+
+.ogu-skel--percent {
+  flex: none;
+  width: 26px;
+  height: 9px;
+  margin-left: auto;
+}
+
+.ogu-skel--fill {
+  width: 36%;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--color-v2-border-border-base, rgba(127, 127, 127, 0.25));
+}
+
+.ogu-skel--reset {
+  width: 78px;
+  height: 8px;
+}
+
+.ogu-track--skeleton {
+  background: var(--color-v2-background-bg-layer-01, rgba(127, 127, 127, 0.08));
+  box-shadow: none;
+}
+
+.ogu-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Motion ------------------------------------------------------------------ */
+
+@keyframes ogu-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes ogu-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ogu-refresh {
+    transition: none;
+  }
+
+  .ogu-refresh:active:not(:disabled) {
+    transform: none;
+  }
+
+  .ogu-refresh--busy svg,
+  .ogu-skel {
+    animation: none;
+  }
+
+  .ogu-fill {
+    transition: none;
+  }
+}
+
+/* Forced colors keep the track and fill distinguishable without backgrounds. */
+@media (forced-colors: active) {
+  .ogu-track {
+    border: 1px solid CanvasText;
+  }
+
+  .ogu-fill {
+    border: 1px solid CanvasText;
+    background-color: Highlight;
+    forced-color-adjust: none;
+  }
+
+  .ogu-badge--limited {
+    border: 1px solid CanvasText;
+  }
+}
